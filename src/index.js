@@ -4,7 +4,7 @@ const config = require('config')
 const debug = require('debug')('aplication:server')
 const morgan = require('morgan')
 const http = require('http')
-// require('../src/database')
+require('../src/database')
 
 /**
 * instal morgan for routes
@@ -15,7 +15,8 @@ app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({ limit: '50mb' }))
 
 // routes
-// app.use(require('./routes/user.routes'))
+app.use(require('./routes/gateway.routes'))
+app.use(require('./routes/peripheral.routes'))
 
 /**
  * Get port from config and store in Express.
@@ -26,13 +27,13 @@ app.set('port', port)
 /**
  * Create HTTP server.
  */
-const server = http.createServer({}, app)
+const server = http.createServer(app)
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 server.listen(port || 5000, function () {
-  console.log(`Server running on: https://localhost:${port}`)
+  console.log(`Server running on: http://localhost:${port}`)
 })
 server.on('error', onError)
 server.on('listening', onListening)

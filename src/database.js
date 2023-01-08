@@ -4,11 +4,11 @@ const config = require('config')
 
 const db = config.get('MONGODB_URI')
 
+mongoose.set('strictQuery', true)
+
 mongoose.connect(db, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true
+  // useNewUrlParser: true,
+  // useUnifiedTopology: true
 })
 
 connection.once('open', () => {

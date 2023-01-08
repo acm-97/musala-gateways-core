@@ -1,4 +1,4 @@
 {
-  "MONGODB_URI": "mongodb://localhost/tode-angular",
+  "MONGODB_URI": "mongodb://localhost:27017/gateways_management",
   "port": 4000
 }
