@@ -5,14 +5,23 @@ const debug = require('debug')('aplication:server')
 const morgan = require('morgan')
 const http = require('http')
 require('../src/database')
+const cors = require('cors')
 
 /**
-* instal morgan for routes
-*/
+ * instal morgan for routes
+ */
 app.use(morgan('dev'))
 
 app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({ limit: '50mb' }))
+
+app.use(
+  cors({
+    origin: 'http://127.0.0.1:5173', // allow to server to accept request from different origin
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true // allow session cookie from browser to pass through
+  })
+)
 
 // routes
 app.use(require('./routes/gateway.routes'))
@@ -63,7 +72,8 @@ function onError (error) {
  */
 function onListening () {
   const address = server.address()
-  const bind = typeof address === 'string' ? `pipe ${address}` : `port ${address.port}`
+  const bind =
+    typeof address === 'string' ? `pipe ${address}` : `port ${address.port}`
   debug('Listening on ' + bind)
 }
 
