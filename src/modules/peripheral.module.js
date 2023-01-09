@@ -9,7 +9,6 @@ const peripheralSchema = new Schema({
   },
   vendor: {
     type: String,
-    unique: true,
     required: [true, 'A vendor for the peripheral is required']
   },
   status: {
