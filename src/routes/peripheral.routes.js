@@ -13,7 +13,7 @@ router.route('/api/peripheral/:id').get(async (req, res) => {
   const { id: _id } = req.params
 
   await Peripheral.findOne({ _id }).populate('gateway')
-    .then((peripheral) => res.status(200).json(peripheral))
+    .then((peripheral) => res.status(200).json(peripheral[0]))
     .catch(err => res.status(400).json(Errors(err)))
 })
 

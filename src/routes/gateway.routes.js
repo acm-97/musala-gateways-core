@@ -25,14 +25,14 @@ router.route('/api/gateway/:id').get(async (req, res) => {
   const { id } = req.params
 
   await Gateway.aggregate([{ $match: { _id: Types.ObjectId(id) } }, ...agg])
-    .then((gateway) => res.status(200).json(gateway))
+    .then((gateway) => res.status(200).json(gateway[0]))
     .catch(err => res.status(400).json(Errors(err)))
 })
 
 router.route('/api/gateway').post(async (req, res) => {
   const ipv4 = req.body.ipv4_address
   if (!checkIfValidIP(ipv4) || await existIPV4(ipv4)) {
-    return res.status(400).json(`${ipv4} is an invalid IP`)
+    return res.status(400).json(`${ipv4} is an invalid IP or is already in use`)
   }
 
   await Gateway.create(req.body)
@@ -43,7 +43,7 @@ router.route('/api/gateway').post(async (req, res) => {
 router.route('/api/gateway/:id').patch(async (req, res) => {
   const ipv4 = req.body.ipv4_address
   if (ipv4 && (!checkIfValidIP(ipv4) || await existIPV4(ipv4))) {
-    return res.status(400).json(`${ipv4} is an invalid IP`)
+    return res.status(400).json(`${ipv4} is an invalid IP or is already in use`)
   }
 
   const { id: _id } = req.params
