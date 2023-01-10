@@ -4,7 +4,6 @@ const Schema = mongoose.Schema
 const peripheralSchema = new Schema({
   uid: {
     type: Number,
-    unique: true,
     required: [true, 'A UID for the peripheral is required']
   },
   vendor: {
