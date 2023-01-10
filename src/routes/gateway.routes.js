@@ -10,7 +10,7 @@ const agg = [
       from: 'peripherals',
       localField: '_id',
       foreignField: 'gateway',
-      as: 'peripherals_devices'
+      as: 'peripheralsDevices'
     }
   }
 ]
