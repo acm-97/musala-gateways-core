@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const router = Router()
-const Gateway = require('../modules/gateway.module')
+const Gateway = require('../models/gateway.model')
 const { checkIfValidIP, Errors } = require('../utils')
 const { Types } = require('mongoose')
 

@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const router = Router()
-const Peripheral = require('../modules/peripheral.module')
+const Peripheral = require('../models/peripheral.model')
 const { Errors } = require('../utils')
 
 router.route('/api/peripherals').get(
