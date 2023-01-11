@@ -3,6 +3,7 @@ const router = Router()
 const Gateway = require('../models/gateway.model')
 const { checkIfValidIP, Errors } = require('../utils')
 const { Types } = require('mongoose')
+const Peripheral = require('../models/peripheral.model')
 
 const agg = [
   {
@@ -87,8 +88,13 @@ router.route('/api/gateway/:id').patch(async (req, res) => {
 router.route('/api/gateway/:id').delete(async (req, res) => {
   const { id: _id } = req.params
 
-  await Gateway.deleteOne({ _id })
-    .then((gateway) => res.status(200).json(gateway))
+  await Peripheral.deleteMany({ gateway: _id.toString() })
+    .then(
+      async () =>
+        await Gateway.deleteOne({ _id })
+          .then((gateway) => res.status(200).json(gateway))
+          .catch((err) => res.status(400).json(Errors(err)))
+    )
     .catch((err) => res.status(400).json(Errors(err)))
 })
 
