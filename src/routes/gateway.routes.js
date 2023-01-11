@@ -47,7 +47,6 @@ router.route('/api/gateway').post(async (req, res) => {
       .status(400)
       .json('The provided IP is invalid or is already in use')
   }
-
   const gate = await Gateway.findOne({ name: req.body.name })
   if (gate) {
     return res.status(400).json(`Name ${req.body.name} is already in use`)
@@ -65,7 +64,6 @@ router.route('/api/gateway/:id').patch(async (req, res) => {
   const ipv4 = req.body.ipv4_address
   const { id: _id } = req.params
   let gate = null
-
   gate = await existIPV4(ipv4)
   if (!checkIfValidIP(ipv4) || gate?._id.toString() !== _id) {
     return res
