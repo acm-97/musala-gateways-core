@@ -16,7 +16,7 @@ router.route('/api/peripheral/:id').get(async (req, res) => {
 
   await Peripheral.findOne({ _id })
     .populate('gateway')
-    .then((peripheral) => res.status(200).json(peripheral[0]))
+    .then((peripheral) => res.status(200).json(peripheral))
     .catch((err) => res.status(400).json(Errors(err)))
 })
 
@@ -47,10 +47,14 @@ router.route('/api/peripheral/:id').patch(async (req, res) => {
   let device = null
 
   device = await Peripheral.findOne({ uid: req.body.uid })
-  if (device && device._id.toString() !== _id) {
+  if (!req.body.uid || (device && device._id.toString() !== _id)) {
     return res
       .status(400)
-      .json(`UID ${req.body.uid} is already assigned to another device`)
+      .json(
+        !req.body.uid
+          ? 'UID field is requiered'
+          : `UID ${req.body.uid} is already assigned to another device`
+      )
   }
 
   device = await Peripheral.findOne({ vendor: req.body.vendor })
