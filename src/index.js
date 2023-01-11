@@ -1,6 +1,7 @@
+
+require('dotenv').config()
 const express = require('express')
 const app = express()
-const config = require('config')
 const debug = require('debug')('aplication:server')
 const morgan = require('morgan')
 const http = require('http')
@@ -28,10 +29,10 @@ app.use(require('./routes/gateway.routes'))
 app.use(require('./routes/peripheral.routes'))
 
 /**
- * Get port from config and store in Express.
+ * Get port from .env and store in Express.
  */
-const port = config.get('port')
-app.set('port', port)
+const { PORT } = process.env || 5000
+app.set('port', PORT)
 
 /**
  * Create HTTP server.
@@ -41,8 +42,8 @@ const server = http.createServer(app)
 /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(port || 5000, function () {
-  console.log(`Server running on: http://localhost:${port}`)
+server.listen(PORT, function () {
+  console.log(`Server running on: http://localhost:${PORT}`)
 })
 server.on('error', onError)
 server.on('listening', onListening)
@@ -54,7 +55,7 @@ function onError (error) {
   if (error.syscall !== 'listen') {
     throw error
   }
-  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`
+  const bind = typeof PORT === 'string' ? `Pipe ${PORT}` : `Port ${PORT}`
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -77,4 +78,4 @@ function onListening () {
   debug('Listening on ' + bind)
 }
 
-module.exports = app
+module.exports = { app, server }

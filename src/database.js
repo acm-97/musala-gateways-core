@@ -1,12 +1,11 @@
 const mongoose = require('mongoose')
 const connection = mongoose.connection
-const config = require('config')
 
-const db = config.get('MONGODB_URI')
+const { MONGODB_URI } = process.env
 
 mongoose.set('strictQuery', true)
 
-mongoose.connect(db, {
+mongoose.connect(MONGODB_URI, {
   // useNewUrlParser: true,
   // useUnifiedTopology: true
 })
