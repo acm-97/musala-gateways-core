@@ -29,11 +29,11 @@ Each peripheral device has:
 
 ## How to start?
 
-- First ypu need to install dependencies, type `yarn install` or `npm install` on console.
-- Then for get the server running:
-  - Create `.env` file and put the content of `.env.template` inside. This template is only for show the environment variables and a example of the values in this case you can use the same if you use it in localhost.
+- First you need to install the dependencies, type `yarn install` or `npm install` on console.
+- Then, to get the server running:
+  - Create `.env` file and put the content of `.env.template` inside. This template is only to display the environment variables and a example of the values in this case you can use the same if you use it in localhost.
   - Once created you can then type in console `yarn start` or `npm run start` if you want the server runing.
-  - For run the tests, type in console `yarn test` or `npm run test`
+  - To run the tests, type in console `yarn test` or `npm run test`
 
 ## API Endpoints
 
