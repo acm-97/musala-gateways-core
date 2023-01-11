@@ -30,12 +30,18 @@ router.route('/api/gateways').get(
 /**
  * * get one route for gateways
  */
-router.route('/api/gateway/:id').get(async (req, res) => {
+router.route('/api/gateway/:id([0-9a-fA-F]{24})').get(async (req, res) => {
   const { id } = req.params
 
-  await Gateway.aggregate([{ $match: { _id: Types.ObjectId(id) } }, ...agg])
-    .then((gateway) => res.status(200).json(gateway[0]))
-    .catch((err) => res.status(400).json(Errors(err)))
+  await Gateway.findOne({ _id: Types.ObjectId(id) }).then(async (result) => {
+    if (!result) {
+      res.status(404).json('Gateway not found')
+    }
+
+    await Gateway.aggregate([{ $match: { _id: Types.ObjectId(id) } }, ...agg])
+      .then((gateway) => res.status(200).json(gateway[0]))
+      .catch((err) => res.status(400).json(Errors(err)))
+  })
 })
 
 /**
@@ -61,43 +67,54 @@ router.route('/api/gateway').post(async (req, res) => {
 /**
  * * patch route for gateways
  */
-router.route('/api/gateway/:id').patch(async (req, res) => {
+router.route('/api/gateway/:id([0-9a-fA-F]{24})').patch(async (req, res) => {
   const ipv4 = req.body.ipv4_address
   const { id: _id } = req.params
   let gate = null
-  gate = await existIPV4(ipv4)
-  if (!checkIfValidIP(ipv4) || gate?._id.toString() !== _id) {
-    return res
-      .status(400)
-      .json(`${ipv4} is an invalid IP or is already in use`)
-  }
 
-  gate = await Gateway.findOne({ name: req.body.name })
-  if (gate && gate._id.toString() !== _id) {
-    return res.status(400).json(`Name ${req.body.name} is already in use`)
-  }
+  await Gateway.findOne({ _id: Types.ObjectId(_id) }).then(async (result) => {
+    if (!result) {
+      res.status(404).json('Gateway not found')
+    }
 
-  await Gateway.updateOne({ _id }, req.body)
-    .then((gateway) => res.status(200).json(gateway))
-    .catch((err) => res.status(400).json(Errors(err)))
+    gate = await existIPV4(ipv4)
+    if (!checkIfValidIP(ipv4) || gate?._id.toString() !== _id) {
+      return res
+        .status(400)
+        .json(`${ipv4} is an invalid IP or is already in use`)
+    }
+
+    gate = await Gateway.findOne({ name: req.body.name })
+    if (gate && gate._id.toString() !== _id) {
+      return res.status(400).json(`Name ${req.body.name} is already in use`)
+    }
+
+    await Gateway.updateOne({ _id }, req.body)
+      .then((gateway) => res.status(200).json(gateway))
+      .catch((err) => res.status(400).json(Errors(err)))
+  })
 })
-
 /**
  * * delete route for gateways
  */
-router.route('/api/gateway/:id').delete(async (req, res) => {
+router.route('/api/gateway/:id([0-9a-fA-F]{24})').delete(async (req, res) => {
   const { id: _id } = req.params
 
-  await Peripheral.deleteMany({ gateway: _id.toString() })
-    .then(
-      async () =>
-        await Gateway.deleteOne({ _id })
-          .then((gateway) => res.status(200).json(gateway))
-          .catch((err) => res.status(400).json(Errors(err)))
-    )
-    .catch((err) => res.status(400).json(Errors(err)))
-})
+  await Gateway.findOne({ _id: Types.ObjectId(_id) }).then(async (result) => {
+    if (!result) {
+      res.status(404).json('Gateway not found')
+    }
 
+    await Peripheral.deleteMany({ gateway: _id.toString() })
+      .then(
+        async () =>
+          await Gateway.deleteOne({ _id })
+            .then((gateway) => res.status(200).json(gateway))
+            .catch((err) => res.status(400).json(Errors(err)))
+      )
+      .catch((err) => res.status(400).json(Errors(err)))
+  })
+})
 /**
  * If the IP is valid and it exists, return a 400 status code with a message.
  * @param ip - the ip address to be checked
