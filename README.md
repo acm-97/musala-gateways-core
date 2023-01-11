@@ -1,4 +1,6 @@
-# REST service (JSON/HTTP) for storing information about gateways and their associated devices
+# REST service (JSON/HTTP)
+
+You can see the [client repo here](https://github.com/acm-97/musala-gateways-client)
 
 ## Description of the task
 
