@@ -18,7 +18,7 @@ app.use(express.urlencoded({ limit: '50mb' }))
 
 app.use(
   cors({
-    origin: 'http://127.0.0.1:5173', // allow to server to accept request from different origin
+    origin: '*', // allow to server to accept request from different origin
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true // allow session cookie from browser to pass through
   })
