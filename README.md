@@ -70,3 +70,7 @@ Routes:
 - `POST /api/peripheral/` in addition to the requested info you most provide the **gateway id** with which you want to link this device.
 - `/api/peripheral/:id` recieve a **peripherals id** by params and the fields you want to update by the body of the request.
 - `/api/peripheral/:id` recieve a **peripherals id** by params to delete a gateway.
+
+## Automatitation Build
+
+For Automatitation Build, I have created a workflow for the tests in the github actions for this repository.
