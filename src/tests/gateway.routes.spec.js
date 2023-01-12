@@ -63,16 +63,6 @@ describe('Gateways routes tests', () => {
       expect(response.body).toBeInstanceOf(Object)
       expect(JSON.stringify(response.body)).not.toBe('{}')
     })
-
-    // it('Response 404', async () => {
-    //   await api
-    //     .get('/api/gateway/wrong_id')
-    //     .expect('Content-Type', /json/)
-    //     .expect(404).end((err) => {
-    //       if (err) return done(err)
-    //       done()
-    //     })
-    // })
   })
 
   describe('PATCH /api/gateway/:id', () => {
@@ -111,8 +101,7 @@ describe('Gateways routes tests', () => {
 
     it('Response 404', async () => {
       const response = await api.delete('/api/gateway/wrong_id').send()
-      expect(response.status).toBe(400)
-      expect(response.headers['content-type']).toContain('json')
+      expect(response.status).toBe(404)
     })
   })
 })

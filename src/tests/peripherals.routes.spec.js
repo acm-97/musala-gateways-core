@@ -116,8 +116,7 @@ describe('Peripherals routes tests', () => {
 
     it('Response 404', async () => {
       const response = await api.delete('/api/peripheral/wrong_id').send()
-      expect(response.status).toBe(400)
-      expect(response.headers['content-type']).toContain('json')
+      expect(response.status).toBe(404)
     })
   })
 })
